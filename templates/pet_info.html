@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}  {{pet.name}}'s Info {% endblock %}
+
+{% block content %}
+
+<h2 class="display-3 text-center">{{pet.name}}</h2>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <image src="{{pet.photo_url}}" class="img-fluid rounded justify-content-center" alt="Image of pet"></image>
+            </div>
+            <div class="col-md-6 text-center bg-info bg-opacity-10 border border-info rounded">
+                <p>Species: {{pet.species}}</p>
+                <p>Age: {{pet.age}}</p>
+                <p>Profile: {{pet.notes}}</p>
+                <a class="btn btn-danger" href="/">See All Pets</a>
+                <a class="btn btn-primary" href="/{{pet.id}}/edit">edit</a>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <form id="edit-pet-form" method="POST">
+                            {% for field in form
+                                if field.widget.input_type != 'hidden' %}
+                            {{ form.hidden_tag() }} 
+                            <tr>
+                            <div class="form-group">
+                                {% if field.type == "BooleanField" %}
+                                    <td></td>
+                                    <td>{{ field }} {{field.label }}</td>
+
+                                {% else %}
+
+                                {{field.label}}
+                                {{field(class_="form-control")}}
+        
+                                {% for error in field.errors %}
+                                <small class="form-text text-danger">
+                                {{error}}
+                                </small>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            </tr>
+                            {% endfor %}
+                            <a class="btn btn-danger" href="/{{pet.id}}">Cancel</a>
+                            <button class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
